@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Game Ular Tangga Nusantara - Karya Kelompok</title>
+  <title>Lompat Tali Karet Kuis Pemrograman - Tugas Sekolah</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -19,671 +19,195 @@
     .font-fredoka {
       font-family: 'Fredoka One', cursive;
     }
-    
-    /* Papan Grid Styling */
-    #board-grid {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      grid-template-rows: repeat(10, 1fr);
-      aspect-ratio: 1 / 1;
-      width: 100%;
-      max-width: 600px;
-      position: relative;
-    }
-
-    /* Animasi Bidak Move */
-    .pawn {
-      transition: all 0.35s ease-in-out;
-      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.4));
-      z-index: 20;
-    }
-
-    /* Animasi Dadu 3D */
-    .dice-container {
-      perspective: 1000px;
-    }
-    .dice {
-      width: 60px;
-      height: 60px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 1s ease-out;
-    }
-    .dice-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: white;
-      border: 3px solid #333;
-      border-radius: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: inset 0 0 8px rgba(0,0,0,0.15);
-    }
-    .dot {
-      width: 12px;
-      height: 12px;
-      background-color: #e11d48;
-      border-radius: 50%;
-    }
-
-    /* Custom Canvas Layer untuk Ular & Tangga */
-    #canvas-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    /* Loading Screen Glow */
     .glow-text {
-      text-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
+      text-shadow: 0 0 15px rgba(236, 72, 153, 0.6);
     }
   </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between items-center p-2 sm:p-4">
+<body class="bg-slate-950 text-white min-h-screen flex flex-col justify-between items-center p-3 sm:p-6">
 
   <!-- ================= LAYAR LOADING / WELCOME SCREEN ================= -->
   <div id="loading-screen" class="fixed inset-0 bg-slate-950 z-50 flex flex-col items-center justify-center p-4">
-    <div class="bg-slate-900 border-2 border-amber-500/50 rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center shadow-2xl shadow-amber-500/10 relative overflow-hidden">
-      <!-- Decorative Background elements -->
-      <div class="absolute -top-12 -left-12 w-32 h-32 bg-amber-500/10 rounded-full blur-xl"></div>
-      <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-red-500/10 rounded-full blur-xl"></div>
+    <div class="bg-slate-900 border-2 border-pink-500/50 rounded-3xl p-6 sm:p-8 max-w-lg w-full text-center shadow-2xl shadow-pink-500/10 relative overflow-hidden">
+      
+      <!-- Dekorasi Background -->
+      <div class="absolute -top-12 -left-12 w-32 h-32 bg-pink-500/10 rounded-full blur-xl"></div>
+      <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-indigo-500/10 rounded-full blur-xl"></div>
 
       <!-- Icon & Judul -->
-      <div class="text-5xl sm:text-6xl text-amber-400 mb-3 animate-bounce">
-        <i class="fa-solid fa-gamepad"></i>
+      <div class="text-5xl sm:text-6xl text-pink-400 mb-3 animate-bounce">
+        <i class="fa-solid fa-person-running"></i>
       </div>
-      <h1 class="text-3xl sm:text-4xl font-fredoka text-amber-400 tracking-wide mb-1 glow-text">
-        ULAR TANGGA
+      <h1 class="text-2xl sm:text-3xl font-fredoka text-pink-400 tracking-wide mb-1 glow-text">
+        LOMPAT TALI KARET
       </h1>
       <p class="text-xs sm:text-sm text-slate-400 uppercase tracking-widest font-semibold mb-6">
-        Edisi Tradisional Nusantara
+        Edisi Kuis Pemrograman Web
       </p>
 
       <!-- KOTAK IDENTITAS TIM PEMBUAT -->
       <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 mb-6 backdrop-blur-sm">
-        <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm mb-2 uppercase tracking-wide">
+        <div class="flex items-center justify-center gap-2 text-pink-400 font-bold text-sm mb-2 uppercase tracking-wide">
           <i class="fa-solid fa-users"></i>
           <span>Tim Pembuat Game:</span>
         </div>
-        <div class="space-y-1 text-slate-200 font-semibold text-sm sm:text-base">
+        <div class="space-y-1.5 text-slate-200 font-semibold text-sm">
           <div class="bg-slate-700/50 py-1.5 px-3 rounded-lg border border-slate-600/50 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-user-check text-emerald-400 text-xs"></i>
+            <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
             <span>Ernawati Mashita</span>
           </div>
           <div class="bg-slate-700/50 py-1.5 px-3 rounded-lg border border-slate-600/50 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-user-check text-emerald-400 text-xs"></i>
+            <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
             <span>Fifi Lita</span>
           </div>
           <div class="bg-slate-700/50 py-1.5 px-3 rounded-lg border border-slate-600/50 flex items-center justify-center gap-2">
-            <i class="fa-solid fa-user-check text-emerald-400 text-xs"></i>
+            <i class="fa-solid fa-check text-emerald-400 text-xs"></i>
             <span>Asyifa Nurfaiza</span>
           </div>
         </div>
       </div>
 
-      <!-- Mode Selector -->
-      <div class="mb-6">
-        <label class="block text-slate-400 text-xs font-bold mb-2 uppercase tracking-wider">Pilih Mode Permainan:</label>
-        <div class="grid grid-cols-2 gap-3">
-          <button id="mode-vs-ai" onclick="selectMode('ai')" class="py-2.5 px-3 rounded-xl border-2 border-amber-500 bg-amber-500/20 text-amber-300 font-bold text-xs sm:text-sm transition-all">
-            <i class="fa-solid fa-robot mr-1"></i> Vs Komputer
-          </button>
-          <button id="mode-vs-player" onclick="selectMode('player')" class="py-2.5 px-3 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-bold text-xs sm:text-sm hover:border-amber-500/50 transition-all">
-            <i class="fa-solid fa-user-group mr-1"></i> 2 Pemain
-          </button>
-        </div>
-      </div>
-
       <!-- Tombol Start -->
-      <button onclick="startGame()" class="w-full py-3.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-base rounded-xl shadow-lg shadow-amber-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
-        <i class="fa-solid fa-play"></i> MULAI PERMAINAN
+      <button onclick="startGame()" class="w-full py-3.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-extrabold text-base rounded-xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
+        <i class="fa-solid fa-play"></i> MULAI BERMAIN & KUIS
       </button>
 
       <div class="mt-4 text-xs text-slate-500">
-        Tugas Aplikasi Game Web Tradisional
+        Jawab soal coding dengan benar agar karakter bisa melompati tali!
       </div>
     </div>
   </div>
 
   <!-- ================= HEADER UTAMA ================= -->
-  <header class="w-full max-w-5xl flex flex-wrap items-center justify-between gap-2 mb-2 px-2">
+  <header class="w-full max-w-2xl flex items-center justify-between gap-2 mb-4 px-2">
     <div class="flex items-center gap-2">
-      <div class="w-10 h-10 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 text-xl font-bold">
-        <i class="fa-solid fa-dice"></i>
+      <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-500/40 flex items-center justify-center text-pink-400 text-lg font-bold">
+        <i class="fa-solid fa-code"></i>
       </div>
       <div>
-        <h2 class="font-fredoka text-amber-400 text-lg sm:text-xl leading-none">Ular Tangga</h2>
-        <span class="text-[10px] sm:text-xs text-slate-400">Oleh: Ernawati, Fifi, & Asyifa</span>
+        <h2 class="font-fredoka text-pink-400 text-base sm:text-lg leading-none">Lompat Tali Koding</h2>
+        <span class="text-[10px] text-slate-400">Oleh: Ernawati, Fifi, & Asyifa</span>
       </div>
     </div>
     
     <div class="flex items-center gap-2">
-      <button onclick="showHelpModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-circle-question text-amber-400"></i> Bantuan
-      </button>
-      <button onclick="resetToLoading()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-700 flex items-center gap-1.5 transition">
-        <i class="fa-solid fa-rotate-right text-red-400"></i> Ulang
+      <div class="bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold text-amber-400 flex items-center gap-1.5">
+        <i class="fa-solid fa-trophy"></i> Skor: <span id="score-val">0</span>
+      </div>
+      <button onclick="location.reload()" class="bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-xl text-xs font-semibold border border-slate-800 transition">
+        <i class="fa-solid fa-rotate-right text-red-400"></i>
       </button>
     </div>
   </header>
 
   <!-- ================= AREA GAME UTAMA ================= -->
-  <main class="w-full max-w-5xl flex flex-col lg:flex-row items-center lg:items-start justify-center gap-4 flex-1">
+  <main class="w-full max-w-2xl flex flex-col gap-4">
     
-    <!-- KIRI: PAPAN GAME (CANVAS + GRID) -->
-    <div class="relative w-full max-w-[550px] bg-slate-950 p-2 sm:p-3 rounded-2xl border-2 border-slate-800 shadow-2xl flex items-center justify-center">
-      <div id="board-container" class="relative w-full">
-        <!-- Grid Papan -->
-        <div id="board-grid" class="rounded-xl overflow-hidden border border-slate-700"></div>
-        <!-- Layer Canvas Ular & Tangga -->
-        <canvas id="canvas-layer"></canvas>
+    <!-- Arena Animasi Game -->
+    <div class="relative w-full h-64 bg-slate-900 rounded-2xl border-2 border-slate-800 overflow-hidden flex flex-col justify-end p-4 shadow-xl">
+      <!-- Info Ketinggian Tali -->
+      <div class="absolute top-3 left-4 bg-slate-950/80 border border-slate-800 px-3 py-1 rounded-full text-xs font-bold text-pink-300">
+        Level: <span id="level-name">1. Setinggi Lutut</span>
+      </div>
+
+      <!-- Karakter & Tali (Visual Sederhana) -->
+      <div class="flex items-end justify-center h-full pb-2 relative">
+        <!-- Karakter Pemain -->
+        <div id="character" class="text-6xl sm:text-7xl transition-all duration-300 transform translate-y-0">
+          👧
+        </div>
+        <!-- Efek Visual Tali Bergerak -->
+        <div id="rope-effect" class="absolute bottom-6 w-32 h-8 border-b-4 border-dashed border-pink-500 rounded-full opacity-70 animate-pulse"></div>
+      </div>
+
+      <!-- Tanah -->
+      <div class="w-full h-3 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full"></div>
+    </div>
+
+    <!-- KOTAK KUIS PEMROGRAMAN -->
+    <div id="quiz-container" class="bg-slate-900 border-2 border-slate-800 rounded-2xl p-5 shadow-xl">
+      <div class="flex items-center justify-between mb-3 border-b border-slate-800 pb-2">
+        <span class="text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-question"></i> Soal Tantangan Pemrograman
+        </span>
+        <span id="question-counter" class="text-xs text-slate-400 font-semibold">Pertanyaan 1 dari 5</span>
+      </div>
+
+      <!-- Pertanyaan -->
+      <h3 id="question-text" class="text-sm sm:text-base font-bold text-slate-100 mb-4">
+        Memuat soal...
+      </h3>
+
+      <!-- Opsi Pilihan Ganda -->
+      <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <!-- Tombol opsi dimasukkan lewat JavaScript -->
       </div>
     </div>
 
-    <!-- KANAN: PANEL KONTROL & STATUS -->
-    <div class="w-full max-w-[550px] lg:max-w-[320px] flex flex-col gap-3">
-      
-      <!-- Kartu Identitas Tim (Permanen) -->
-      <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-3 text-xs">
-        <div class="text-amber-400 font-bold flex items-center gap-1.5 mb-1.5 border-b border-slate-700/60 pb-1">
-          <i class="fa-solid fa-graduation-cap"></i>
-          <span>Pembuat Game:</span>
-        </div>
-        <div class="text-slate-300 space-y-0.5 font-medium">
-          <p>1. Ernawati Mashita</p>
-          <p>2. Fifi Lita</p>
-          <p>3. Asyifa Nurfaiza</p>
-        </div>
-      </div>
-
-      <!-- Kartu Giliran & Kontrol Dadu -->
-      <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl p-4 flex flex-col items-center justify-center shadow-lg relative overflow-hidden">
-        <div id="turn-indicator" class="text-sm font-bold uppercase tracking-wider mb-3 px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30">
-          Giliran: Pemain 1
-        </div>
-
-        <!-- Visual Dadu -->
-        <div class="dice-container my-2">
-          <div id="dice" class="dice flex items-center justify-center bg-white rounded-xl border-2 border-slate-900 shadow-xl text-slate-900 font-extrabold text-3xl">
-            ?
-          </div>
-        </div>
-
-        <!-- Tombol Kocok Dadu -->
-        <button id="roll-btn" onclick="rollDice()" class="w-full mt-3 py-3 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold text-sm rounded-xl shadow-lg shadow-emerald-500/20 active:scale-95 transition-all flex items-center justify-center gap-2">
-          <i class="fa-solid fa-dice-five text-lg"></i> KOCOK DADU
-        </button>
-      </div>
-
-      <!-- Status Pemain (Posisi) -->
-      <div class="grid grid-cols-2 gap-2">
-        <!-- Player 1 Status -->
-        <div id="p1-card" class="bg-slate-800 border-2 border-red-500/50 rounded-xl p-3 flex items-center gap-2.5 transition-all">
-          <div class="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center text-white font-bold text-xs shadow">
-            P1
-          </div>
-          <div>
-            <div class="text-[11px] text-slate-400 font-semibold" id="p1-name">Pemain 1</div>
-            <div class="text-xs font-extrabold text-amber-400">Petak: <span id="p1-pos">1</span></div>
-          </div>
-        </div>
-
-        <!-- Player 2 / AI Status -->
-        <div id="p2-card" class="bg-slate-800 border-2 border-slate-700 rounded-xl p-3 flex items-center gap-2.5 transition-all">
-          <div id="p2-badge" class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs shadow">
-            P2
-          </div>
-          <div>
-            <div class="text-[11px] text-slate-400 font-semibold" id="p2-name">Komputer</div>
-            <div class="text-xs font-extrabold text-amber-400">Petak: <span id="p2-pos">1</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Riwayat/Log Permainan -->
-      <div class="bg-slate-800/80 border border-slate-700/80 rounded-xl p-3 flex flex-col h-28">
-        <div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1">
-          <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> Catatan Langkah:
-        </div>
-        <div id="game-log" class="flex-1 overflow-y-auto text-xs space-y-1 text-slate-300 pr-1">
-          <p class="text-slate-500 italic">Game dimulai. Silakan kocok dadu!</p>
-        </div>
-      </div>
-
-    </div>
   </main>
-
-  <!-- ================= MODAL PERATURAN ================= -->
-  <div id="help-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-    <div class="bg-slate-900 border border-slate-700 rounded-2xl p-5 max-w-md w-full shadow-2xl">
-      <div class="flex justify-between items-center mb-3 border-b border-slate-800 pb-2">
-        <h3 class="font-fredoka text-amber-400 text-lg flex items-center gap-2">
-          <i class="fa-solid fa-circle-info"></i> Cara Bermain
-        </h3>
-        <button onclick="closeHelpModal()" class="text-slate-400 hover:text-white text-lg">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-      <div class="text-xs text-slate-300 space-y-2 leading-relaxed">
-        <p>1. Klik tombol <b class="text-emerald-400">Kocok Dadu</b> untuk melangkah.</p>
-        <p>2. Jika mendarat di <b class="text-emerald-400">Kaki Tangga</b>, Anda akan otomatis naik ke atas.</p>
-        <p>3. Jika mendarat di <b class="text-red-400">Kepala Ular</b>, Anda akan meluncur turun ke bawah.</p>
-        <p>4. Pemain pertama yang mencapai tepat di <b class="text-amber-400">Petak 100</b> dinyatakan sebagai Pemenang!</p>
-      </div>
-      <button onclick="closeHelpModal()" class="w-full mt-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold rounded-xl border border-slate-700">
-        Mengerti
-      </button>
-    </div>
-  </div>
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // Config Data Ular dan Tangga
-    const snakesAndLadders = {
-      // Tangga (Naik)
-      4: 14,
-      9: 31,
-      20: 38,
-      28: 84,
-      40: 59,
-      51: 67,
-      63: 81,
-      71: 91,
-      // Ular (Turun)
-      17: 7,
-      54: 34,
-      62: 19,
-      64: 60,
-      87: 24,
-      93: 73,
-      95: 75,
-      99: 78
-    };
-
-    // State Permainan
-    let gameMode = 'ai'; // 'ai' atau 'player'
-    let currentPlayer = 1; // 1 atau 2
-    let positions = { 1: 1, 2: 1 };
-    let isRolling = false;
-    let isGameOver = false;
-
-    // Element HTML
-    const boardGrid = document.getElementById('board-grid');
-    const canvas = document.getElementById('canvas-layer');
-    const ctx = canvas.getContext('2d');
-    const diceEl = document.getElementById('dice');
-    const rollBtn = document.getElementById('roll-btn');
-    const gameLog = document.getElementById('game-log');
-
-    // Inisialisasi saat Halaman Dimuat
-    window.addEventListener('DOMContentLoaded', () => {
-      createBoard();
-      setTimeout(() => {
-        resizeCanvas();
-        drawSnakesAndLadders();
-        createPawns();
-      }, 100);
-    });
-
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      drawSnakesAndLadders();
-      updatePawnPositions();
-    });
-
-    // Memilih Mode Game (Vs AI atau 2 Pemain)
-    function selectMode(mode) {
-      gameMode = mode;
-      const aiBtn = document.getElementById('mode-vs-ai');
-      const pBtn = document.getElementById('mode-vs-player');
-      
-      if (mode === 'ai') {
-        aiBtn.className = "py-2.5 px-3 rounded-xl border-2 border-amber-500 bg-amber-500/20 text-amber-300 font-bold text-xs sm:text-sm transition-all";
-        pBtn.className = "py-2.5 px-3 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-bold text-xs sm:text-sm hover:border-amber-500/50 transition-all";
-        document.getElementById('p2-name').innerText = "Komputer (AI)";
-        document.getElementById('p2-badge').innerText = "AI";
-      } else {
-        pBtn.className = "py-2.5 px-3 rounded-xl border-2 border-amber-500 bg-amber-500/20 text-amber-300 font-bold text-xs sm:text-sm transition-all";
-        aiBtn.className = "py-2.5 px-3 rounded-xl border-2 border-slate-700 bg-slate-800 text-slate-400 font-bold text-xs sm:text-sm hover:border-amber-500/50 transition-all";
-        document.getElementById('p2-name').innerText = "Pemain 2";
-        document.getElementById('p2-badge').innerText = "P2";
+    // Data Soal Pemrograman
+    const quizData = [
+      {
+        question: "Apa kepanjangan dari HTML dalam pembuatan web?",
+        options: [
+          "Hyper Text Markup Language",
+          "High Tech Modern Language",
+          "Hyper Transfer Machine Language",
+          "Home Tool Multi Language"
+        ],
+        correct: 0
+      },
+      {
+        question: "Bahasa pemrograman atau styling apa yang digunakan untuk mempercantik tampilan warna dan tata letak web?",
+        options: ["JavaScript", "CSS", "Python", "PHP"],
+        correct: 1
+      },
+      {
+        question: "Perintah apa di JavaScript yang biasa digunakan untuk menampilkan teks ke console?",
+        options: ["print()", "echo()", "console.log()", "document.write()"],
+        correct: 2
+      },
+      {
+        question: "Tag HTML apa yang digunakan untuk membuat teks berukuran paling besar (Heading 1)?",
+        options: ["<h6>", "<head>", "<p>", "<h1>"],
+        correct: 3
+      },
+      {
+        question: "Simbol apa yang digunakan untuk mengakhiri sebuah pernyataan (statement) di JavaScript?",
+        options: ["; (Titik Koma)", ": (Titik Dua)", ", (Koma)", ". (Titik)"],
+        correct: 0
       }
-    }
+    ];
 
-    // Memulai Permainan dari Layar Loading
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const levels = ["1. Setinggi Lutut", "2. Setinggi Pinggang", "3. Setinggi Dada", "4. Setinggi Telinga", "5. Merdeka (Tinggi)"];
+
+    // Mulai Game
     function startGame() {
       document.getElementById('loading-screen').classList.add('hidden');
-      resetGame();
+      loadQuestion();
     }
 
-    // Membuat Papan 10x10 Zig-Zag
-    function createBoard() {
-      boardGrid.innerHTML = '';
-      for (let row = 9; row >= 0; row--) {
-        let isEvenRow = (9 - row) % 2 === 1;
-        for (let col = 0; col < 10; col++) {
-          let actualCol = isEvenRow ? (9 - col) : col;
-          let tileNumber = row * 10 + actualCol + 1;
-
-          const tile = document.createElement('div');
-          tile.id = `tile-${tileNumber}`;
-          
-          // Warna Selang-Seling Estetik
-          let isDark = (row + col) % 2 === 0;
-          tile.className = `flex flex-col justify-between p-1 text-[10px] sm:text-xs font-bold border border-slate-800/40 relative ${
-            isDark ? 'bg-slate-800 text-slate-400' : 'bg-slate-700/60 text-slate-300'
-          }`;
-
-          // Nomor Petak
-          tile.innerHTML = `<span class="opacity-70">${tileNumber}</span>`;
-          boardGrid.appendChild(tile);
-        }
-      }
-    }
-
-    // Mengatur Ukuran Canvas Ular/Tangga
-    function resizeCanvas() {
-      const container = document.getElementById('board-container');
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
-    }
-
-    // Menghitung Koordinat Pusat Petak
-    function getTileCenter(tileNumber) {
-      const tile = document.getElementById(`tile-${tileNumber}`);
-      const container = document.getElementById('board-container');
-      
-      if (!tile || !container) return { x: 0, y: 0 };
-
-      const tileRect = tile.getBoundingClientRect();
-      const containerRect = container.getBoundingClientRect();
-
-      return {
-        x: tileRect.left - containerRect.left + tileRect.width / 2,
-        y: tileRect.top - containerRect.top + tileRect.height / 2
-      };
-    }
-
-    // Menggambar Visual Ular & Tangga di Canvas
-    function drawSnakesAndLadders() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let start in snakesAndLadders) {
-        let end = snakesAndLadders[start];
-        let startPos = getTileCenter(parseInt(start));
-        let endPos = getTileCenter(parseInt(end));
-
-        if (parseInt(start) < parseInt(end)) {
-          // Tangga (Hijau/Emas)
-          drawLadder(startPos, endPos);
-        } else {
-          // Ular (Merah)
-          drawSnake(startPos, endPos);
-        }
-      }
-    }
-
-    function drawLadder(start, end) {
-      ctx.beginPath();
-      ctx.strokeStyle = '#f59e0b'; // Emas/Kuning
-      ctx.lineWidth = 6;
-      ctx.lineCap = 'round';
-      
-      // Batang Tangga Parallel
-      let dx = end.x - start.x;
-      let dy = end.y - start.y;
-      let angle = Math.atan2(dy, dx);
-      let offset = 8;
-
-      let p1x = start.x + offset * Math.cos(angle + Math.PI/2);
-      let p1y = start.y + offset * Math.sin(angle + Math.PI/2);
-      let p2x = end.x + offset * Math.cos(angle + Math.PI/2);
-      let p2y = end.y + offset * Math.sin(angle + Math.PI/2);
-
-      let p3x = start.x - offset * Math.cos(angle + Math.PI/2);
-      let p3y = start.y - offset * Math.sin(angle + Math.PI/2);
-      let p4x = end.x - offset * Math.cos(angle + Math.PI/2);
-      let p4y = end.y - offset * Math.sin(angle + Math.PI/2);
-
-      // Garis Utama Tangga
-      ctx.moveTo(p1x, p1y); ctx.lineTo(p2x, p2y);
-      ctx.moveTo(p3x, p3y); ctx.lineTo(p4x, p4y);
-      ctx.stroke();
-
-      // Anak Tangga
-      ctx.strokeStyle = '#fbbf24';
-      ctx.lineWidth = 3;
-      let steps = 5;
-      for (let i = 1; i < steps; i++) {
-        let lx1 = p1x + (p2x - p1x) * (i / steps);
-        let ly1 = p1y + (p2y - p1y) * (i / steps);
-        let lx2 = p3x + (p4x - p3x) * (i / steps);
-        let ly2 = p3y + (p4y - p3y) * (i / steps);
-        ctx.beginPath();
-        ctx.moveTo(lx1, ly1);
-        ctx.lineTo(lx2, ly2);
-        ctx.stroke();
-      }
-    }
-
-    function drawSnake(start, end) {
-      ctx.beginPath();
-      ctx.strokeStyle = '#ef4444'; // Merah
-      ctx.lineWidth = 7;
-      ctx.lineCap = 'round';
-
-      // Kurva Sederhana Tubuh Ular
-      let midX = (start.x + end.x) / 2 + 30;
-      let midY = (start.y + end.y) / 2 - 20;
-
-      ctx.moveTo(start.x, start.y);
-      ctx.quadraticCurveTo(midX, midY, end.x, end.y);
-      ctx.stroke();
-
-      // Kepala Ular
-      ctx.fillStyle = '#b91c1c';
-      ctx.beginPath();
-      ctx.arc(start.x, start.y, 8, 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    // Membuat Element Bidak (Pawn)
-    function createPawns() {
-      const p1 = document.createElement('div');
-      p1.id = 'pawn-1';
-      p1.className = 'pawn absolute w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-red-500 border-2 border-white shadow-lg flex items-center justify-center text-[9px] font-bold text-white';
-      p1.innerText = 'P1';
-
-      const p2 = document.createElement('div');
-      p2.id = 'pawn-2';
-      p2.className = 'pawn absolute w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-500 border-2 border-white shadow-lg flex items-center justify-center text-[9px] font-bold text-white';
-      p2.innerText = gameMode === 'ai' ? 'AI' : 'P2';
-
-      document.getElementById('board-container').appendChild(p1);
-      document.getElementById('board-container').appendChild(p2);
-
-      updatePawnPositions();
-    }
-
-    // Memperbarui Posisi Bidak Visual
-    function updatePawnPositions() {
-      const p1Pos = getTileCenter(positions[1]);
-      const p2Pos = getTileCenter(positions[2]);
-
-      const pawn1 = document.getElementById('pawn-1');
-      const pawn2 = document.getElementById('pawn-2');
-
-      if (pawn1 && pawn2) {
-        // Offset sedikit jika berada di petak yang sama agar tidak saling tertutup
-        let offsetP1 = positions[1] === positions[2] ? -6 : 0;
-        let offsetP2 = positions[1] === positions[2] ? 6 : 0;
-
-        pawn1.style.left = `${p1Pos.x - 12 + offsetP1}px`;
-        pawn1.style.top = `${p1Pos.y - 12}px`;
-
-        pawn2.style.left = `${p2Pos.x - 12 + offsetP2}px`;
-        pawn2.style.top = `${p2Pos.y - 12}px`;
+    // Tampilkan Soal
+    function loadQuestion() {
+      if (currentQuestionIndex >= quizData.length) {
+        // Jika soal habis, reset atau ulang dari awal dengan tingkat acak
+        currentQuestionIndex = 0;
       }
 
-      document.getElementById('p1-pos').innerText = positions[1];
-      document.getElementById('p2-pos').innerText = positions[2];
-    }
+      const q = quizData[currentQuestionIndex];
+      document.getElementById('question-text').innerText = q.question;
+      document.getElementById('question-counter').innerText = `Pertanyaan ${currentQuestionIndex + 1} dari ${quizData.length}`;
+      document.getElementById('level-name').innerText = levels[currentQuestionIndex % levels.length];
 
-    // Fungsi Mengocok Dadu
-    function rollDice() {
-      if (isRolling || isGameOver) return;
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
 
-      isRolling = true;
-      rollBtn.disabled = true;
-      rollBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-      let rollCount = 0;
-      const diceInterval = setInterval(() => {
-        let tempValue = Math.floor(Math.random() * 6) + 1;
-        diceEl.innerText = tempValue;
-        diceEl.style.transform = `rotate(${Math.random() * 360}deg)`;
-        rollCount++;
-
-        if (rollCount > 10) {
-          clearInterval(diceInterval);
-          const finalDiceValue = Math.floor(Math.random() * 6) + 1;
-          diceEl.innerText = finalDiceValue;
-          diceEl.style.transform = `rotate(0deg)`;
-          
-          logMessage(`Pemain ${currentPlayer} mengocok dadu dan mendapat <b class="text-amber-400">${finalDiceValue}</b>`);
-          movePlayer(currentPlayer, finalDiceValue);
-        }
-      }, 70);
-    }
-
-    // Pergerakan Pemain Langkah Demi Langkah
-    async function movePlayer(player, steps) {
-      let currentPos = positions[player];
-      let targetPos = currentPos + steps;
-
-      if (targetPos > 100) {
-        logMessage(`Pemain ${player} membutuhkan angka tepat untuk sampai di petak 100.`);
-        finishTurn();
-        return;
-      }
-
-      // Animasi per petak
-      for (let i = 1; i <= steps; i++) {
-        positions[player]++;
-        updatePawnPositions();
-        await new Promise(r => setTimeout(r, 250));
-      }
-
-      // Cek Ular / Tangga
-      let endPos = positions[player];
-      if (snakesAndLadders[endPos]) {
-        let newPos = snakesAndLadders[endPos];
-        await new Promise(r => setTimeout(r, 300));
-
-        if (newPos > endPos) {
-          logMessage(`<span class="text-emerald-400 font-bold">Hore!</span> Pemain ${player} naik TANGGA ke petak ${newPos}!`);
-        } else {
-          logMessage(`<span class="text-red-400 font-bold">Awas!</span> Pemain ${player} dipatuk ULAR turun ke petak ${newPos}!`);
-        }
-
-        positions[player] = newPos;
-        updatePawnPositions();
-      }
-
-      // Cek Menang
-      if (positions[player] === 100) {
-        isGameOver = true;
-        let winnerName = player === 1 ? 'Pemain 1' : (gameMode === 'ai' ? 'Komputer (AI)' : 'Pemain 2');
-        logMessage(`<span class="text-amber-400 font-extrabold text-sm">SELAMAT! ${winnerName} MENANG!</span>`);
-        alert(`🎉 Selamat! ${winnerName} berhasil memenangkan permainan!`);
-        return;
-      }
-
-      finishTurn();
-    }
-
-    // Pergantian Giliran
-    function finishTurn() {
-      isRolling = false;
-      
-      if (!isGameOver) {
-        currentPlayer = currentPlayer === 1 ? 2 : 1;
-        updateTurnUI();
-
-        // Jika vs AI dan giliran AI
-        if (gameMode === 'ai' && currentPlayer === 2) {
-          setTimeout(() => {
-            rollDice();
-          }, 1000);
-        } else {
-          rollBtn.disabled = false;
-          rollBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
-      }
-    }
-
-    // Update Tampilan Giliran
-    function updateTurnUI() {
-      const turnIndicator = document.getElementById('turn-indicator');
-      const p1Card = document.getElementById('p1-card');
-      const p2Card = document.getElementById('p2-card');
-
-      if (currentPlayer === 1) {
-        turnIndicator.innerText = "Giliran: Pemain 1";
-        turnIndicator.className = "text-sm font-bold uppercase tracking-wider mb-3 px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30";
-        p1Card.className = "bg-slate-800 border-2 border-red-500 rounded-xl p-3 flex items-center gap-2.5 shadow-md shadow-red-500/10";
-        p2Card.className = "bg-slate-800 border-2 border-slate-700/60 rounded-xl p-3 flex items-center gap-2.5 opacity-70";
-      } else {
-        let name = gameMode === 'ai' ? 'Komputer' : 'Pemain 2';
-        turnIndicator.innerText = `Giliran: ${name}`;
-        turnIndicator.className = "text-sm font-bold uppercase tracking-wider mb-3 px-3 py-1 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30";
-        p2Card.className = "bg-slate-800 border-2 border-blue-500 rounded-xl p-3 flex items-center gap-2.5 shadow-md shadow-blue-500/10";
-        p1Card.className = "bg-slate-800 border-2 border-slate-700/60 rounded-xl p-3 flex items-center gap-2.5 opacity-70";
-      }
-    }
-
-    // Log Pesan Permainan
-    function logMessage(msg) {
-      const p = document.createElement('p');
-      p.innerHTML = `• ${msg}`;
-      gameLog.appendChild(p);
-      gameLog.scrollTop = gameLog.scrollHeight;
-    }
-
-    // Reset Game
-    function resetGame() {
-      positions = { 1: 1, 2: 1 };
-      currentPlayer = 1;
-      isRolling = false;
-      isGameOver = false;
-      
-      diceEl.innerText = '?';
-      gameLog.innerHTML = '<p class="text-slate-500 italic">Game diulang. Silakan kocok dadu!</p>';
-      
-      rollBtn.disabled = false;
-      rollBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-
-      updateTurnUI();
-      updatePawnPositions();
-    }
-
-    function resetToLoading() {
-      document.getElementById('loading-screen').classList.remove('hidden');
-    }
-
-    // Modal Help
-    function showHelpModal() {
-      document.getElementById('help-modal').classList.remove('hidden');
-    }
-    function closeHelpModal() {
-      document.getElementById('help-modal').classList.add('hidden');
-    }
-  </script>
-</body>
-</html>
+      q.options.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = "w-full text-left py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-pink-500 text-xs sm:text-sm font-semibold transition-all flex items-center justify-between";
+        btn.
