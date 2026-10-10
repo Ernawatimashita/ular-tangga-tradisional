@@ -67,8 +67,8 @@
         </div>
       </div>
 
-      <!-- Tombol Start -->
-      <button onclick="startGame()" class="w-full py-3.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-extrabold text-base rounded-xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2">
+      <!-- Tombol Start (Diperbaiki dengan event listener langsung) -->
+      <button id="start-btn" class="w-full py-3.5 bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-400 hover:to-rose-500 text-white font-extrabold text-base rounded-xl shadow-lg shadow-pink-500/30 transform active:scale-95 transition-all flex items-center justify-center gap-2 cursor-pointer">
         <i class="fa-solid fa-play"></i> MULAI BERMAIN & KUIS
       </button>
 
@@ -110,13 +110,11 @@
         Level: <span id="level-name">1. Setinggi Lutut</span>
       </div>
 
-      <!-- Karakter & Tali (Visual Sederhana) -->
+      <!-- Karakter & Tali -->
       <div class="flex items-end justify-center h-full pb-2 relative">
-        <!-- Karakter Pemain -->
         <div id="character" class="text-6xl sm:text-7xl transition-all duration-300 transform translate-y-0">
           👧
         </div>
-        <!-- Efek Visual Tali Bergerak -->
         <div id="rope-effect" class="absolute bottom-6 w-32 h-8 border-b-4 border-dashed border-pink-500 rounded-full opacity-70 animate-pulse"></div>
       </div>
 
@@ -140,7 +138,7 @@
 
       <!-- Opsi Pilihan Ganda -->
       <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        <!-- Tombol opsi dimasukkan lewat JavaScript -->
+        <!-- Diisi oleh JavaScript -->
       </div>
     </div>
 
@@ -148,7 +146,6 @@
 
   <!-- ================= JAVASCRIPT LOGIC ================= -->
   <script>
-    // Data Soal Pemrograman
     const quizData = [
       {
         question: "Apa kepanjangan dari HTML dalam pembuatan web?",
@@ -161,7 +158,7 @@
         correct: 0
       },
       {
-        question: "Bahasa pemrograman atau styling apa yang digunakan untuk mempercantik tampilan warna dan tata letak web?",
+        question: "Bahasa atau styling apa yang digunakan untuk mempercantik tampilan warna dan tata letak web?",
         options: ["JavaScript", "CSS", "Python", "PHP"],
         correct: 1
       },
@@ -186,17 +183,21 @@
     let score = 0;
     const levels = ["1. Setinggi Lutut", "2. Setinggi Pinggang", "3. Setinggi Dada", "4. Setinggi Telinga", "5. Merdeka (Tinggi)"];
 
-    // Mulai Game
-    function startGame() {
-      document.getElementById('loading-screen').classList.add('hidden');
-      loadQuestion();
-    }
+    // Pastikan tombol terhubung dengan aman menggunakan event listener
+    document.addEventListener("DOMContentLoaded", () => {
+      const startBtn = document.getElementById("start-btn");
+      if (startBtn) {
+        startBtn.addEventListener("click", () => {
+          document.getElementById('loading-screen').classList.add('hidden');
+          loadQuestion();
+        });
+      }
+    });
 
     // Tampilkan Soal
     function loadQuestion() {
       if (currentQuestionIndex >= quizData.length) {
-        // Jika soal habis, reset atau ulang dari awal dengan tingkat acak
-        currentQuestionIndex = 0;
+        currentQuestionIndex = 0; // Berputar kembali ke soal pertama jika habis
       }
 
       const q = quizData[currentQuestionIndex];
@@ -209,5 +210,46 @@
 
       q.options.forEach((option, index) => {
         const btn = document.createElement('button');
-        btn.className = "w-full text-left py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-pink-500 text-xs sm:text-sm font-semibold transition-all flex items-center justify-between";
-        btn.
+        btn.className = "w-full text-left py-2.5 px-3 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 hover:border-pink-500 text-xs sm:text-sm font-semibold transition-all flex items-center justify-between cursor-pointer";
+        btn.innerHTML = `<span>${option}</span> <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>`;
+        btn.onclick = () => checkAnswer(index, q.correct);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    // Cek Jawaban
+    async function checkAnswer(selected, correct) {
+      const optionsContainer = document.getElementById('options-container');
+      const buttons = optionsContainer.getElementsByTagName('button');
+
+      for (let btn of buttons) {
+        btn.disabled = true;
+      }
+
+      if (selected === correct) {
+        buttons[selected].className = "w-full text-left py-2.5 px-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-semibold flex items-center justify-between";
+        score += 20;
+        document.getElementById('score-val').innerText = score;
+
+        // Animasi Lompat Karakter
+        const char = document.getElementById('character');
+        char.style.transform = "translateY(-60px)";
+        await new Promise(r => setTimeout(r, 400));
+        char.style.transform = "translateY(0px)";
+
+        alert("🎉 Benar! Karakter berhasil melompati tali karet!");
+      } else {
+        buttons[selected].className = "w-full text-left py-2.5 px-3 rounded-xl border-2 border-rose-500 bg-rose-500/20 text-rose-300 text-xs sm:text-sm font-semibold flex items-center justify-between";
+        buttons[correct].className = "w-full text-left py-2.5 px-3 rounded-xl border-2 border-emerald-500 bg-emerald-500/20 text-emerald-300 text-xs sm:text-sm font-semibold flex items-center justify-between";
+        
+        alert("❌ Ups, jawaban kurang tepat! Tali tersangkut.");
+      }
+
+      currentQuestionIndex++;
+      setTimeout(() => {
+        loadQuestion();
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
